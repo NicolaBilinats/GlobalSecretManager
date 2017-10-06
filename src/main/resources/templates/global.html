@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-    <!---->
     <title>Global Secret Manager</title>
-
-    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
-    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
     <div th:if="${not #lists.isEmpty(global)}">
         <h2>Global List</h2>
         <table class="table table-striped">
@@ -17,15 +13,14 @@
                 <th>Name</th>
                 <th>Event</th>
             </tr>
-            <tr th:each="g : ${global}">
-                <td th:text="${g.id}">Id</td>
-                <td th:text="${g.name}">Name</td>
-                <td th:text="${g.event}">Event</td>
+            <tr th:each="global : ${global}">
+                <td th:text="${global.id}">Id</td>
+                <td th:text="${global.name}">Name</td>
+                <td th:text="${global.event}">Event</td>
             </tr>
         </table>
 
     </div>
 </div>
-
 </body>
 </html>
