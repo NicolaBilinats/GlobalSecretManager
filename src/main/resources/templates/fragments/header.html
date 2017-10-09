@@ -2,32 +2,42 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap/dist/css/bootstrap.css" th:href="@{/css/bootstrap/dist/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/material.css" th:href="@{/css/bootstrap-material-design/dist/css/material.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/ripples.css" th:href="@{/css/bootstrap-material-design/dist/css/ripples.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/roboto.css" th:href="@{/css/bootstrap-material-design/dist/css/roboto.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../../static/css/guru.css"
-          th:href="@{css/guru.css}" rel="stylesheet" media="screen"/>
+    <script src="../../static/css/jquery/dist/jquery.js" th:src="@{/css/jquery/dist/jquery.js}"></script>
+    <script src="../../static/css/bootstrap/dist/js/bootstrap.js" th:src="@{/css/bootstrap/dist/js/bootstrap.js}"></script>
+    <script src="../../static/css/bootstrap-material-design/dist/js/material.js" th:src="@{/css/bootstrap-material-design/dist/js/material.js}"></script>
+    <script src="../../static/css/bootstrap-material-design/dist/js/ripples.js" th:src="@{/css/bootstrap-material-design/dist/js/ripples.js}"></script>
+    <script>
+        $.material.init();
+    </script>
 </head>
 <body>
 
-<div class="container">
     <div th:fragment="header">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
+        <div class="navbar navbar-white navbar-fixed-top" role="navigation">
+            <div class="container">
+            <!--<div class="container-fluid">-->
                 <div class="navbar-header">
+                    <a class="navbar-brand" rel="home" href="#" th:href="@{/}">
+                        <!--<img style="max-width:100px; margin-top: -7px;" th:src="@{//static/images/drone.png}">-->
+                    <img style="max-width:100%; max-height: 100%;" th:src="@{/images/drone.png}"/>
+                    </a>
                     <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
                     <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/global}">Secrets</a></li>
+                        <li><a href="#" th:href="@{/users}">Users</a></li>
+                        <li><a href="#" th:href="@{/globals}">Secrets</a></li>
                         <li><a href="#" th:href="@{/global/new}">Create Secret</a></li>
                     </ul>
 
                 </div>
-            </div>
-        </nav>
+            <!--</div>-->
+        </div>
 
         <!--<div class="jumbotron">-->
         <!--<div class="row text-center">-->

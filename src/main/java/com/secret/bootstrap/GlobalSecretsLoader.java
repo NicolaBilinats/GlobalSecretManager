@@ -27,20 +27,20 @@ public class GlobalSecretsLoader implements ApplicationListener<ContextRefreshed
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
         GlobalSecret secret1 = new GlobalSecret();
-        secret1.setId(1023);
         secret1.setEvent("[push,tag]");
         secret1.setName("Nicola");
+        System.out.println(secret1);
         globalSecretRepo.save(secret1);
-
+        System.out.println(globalSecretRepo);
         log.info("Secret's one ID " + secret1.getId());
 
         GlobalSecret secret2 = new GlobalSecret();
-        secret2.setId(9);
         secret2.setName("Bilinac");
         secret2.setEvent("[push,tag]");
         globalSecretRepo.save(secret2);
 
         log.info("Secret's two ID " + secret2.getId());
+
     }
 }
 

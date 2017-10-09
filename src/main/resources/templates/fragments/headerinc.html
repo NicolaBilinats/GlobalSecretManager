@@ -2,15 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en" th:fragment="head">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
-          rel="stylesheet" media="screen" />
+    <link href="../../static/css/bootstrap/dist/css/bootstrap.css" th:href="@{/css/bootstrap/dist/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/material.css" th:href="@{/css/bootstrap-material-design/dist/css/material.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/ripples.css" th:href="@{/css/bootstrap-material-design/dist/css/ripples.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/bootstrap-material-design/dist/css/roboto.css" th:href="@{/css/bootstrap-material-design/dist/css/roboto.css}" rel="stylesheet" media="screen"/>
+    <link href="../../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../static/css/guru.css"
-          th:href="@{/css/guru.css}" rel="stylesheet" media="screen"/>
+    <script src="../../static/css/jquery/dist/jquery.js" th:src="@{/css/jquery/dist/jquery.js}"></script>
+    <script src="../../static/css/bootstrap/dist/js/bootstrap.js" th:src="@{/css/bootstrap/dist/js/bootstrap.js}"></script>
+    <script src="../../static/css/bootstrap-material-design/dist/js/material.js" th:src="@{/css/bootstrap-material-design/dist/js/material.js}"></script>
+    <script src="../../static/css/bootstrap-material-design/dist/js/ripples.js" th:src="@{/css/bootstrap-material-design/dist/js/ripples.js}"></script>
+    <script>
+        $.material.init();
+    </script>
 </head>
 <body>
 

@@ -1,0 +1,40 @@
+{
+  "name": "globalsecretmanager",
+  "homepage": "https://github.com/NicolaBilinats/GlobalSecretManager",
+  "version": "0.0.0",
+  "description": "manager for drone",
+  "main": "",
+  "license": "MIT",
+  "dependencies": {
+    "html5-boilerplate": "~5.2.0",
+    "font-awesome": "~4.4.0",
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "bootstrap-material-design": "~0.4.2"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css",
+        "less/font-awesome.less",
+        "scss/font-awesome.scss"
+      ]
+    },
+    "bootstrap-material-design": {
+      "main": [
+        "dist/css/material.css",
+        "dist/js/material.js",
+        "dist/css/ripples.css",
+        "dist/js/ripples.js",
+        "dist/css/roboto.css"
+      ]
+    }
+  }
+}

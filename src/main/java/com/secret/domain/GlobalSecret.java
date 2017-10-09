@@ -43,6 +43,16 @@ public class GlobalSecret {
     public void setEvent(String event) {
         this.event = event;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id='" + id + '\'' +
+                ", name='" + name+ '\'' +
+                ", event='" + event+ '\'' +
+                '}';
+    }
+
 }
 
 

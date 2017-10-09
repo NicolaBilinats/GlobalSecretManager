@@ -9,45 +9,51 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.List;
+
 /**
  * Created by nicola on 06.10.17.
  */
 @Controller
 public class GlobalController {
+
     private GlobalSecretsService globalSecretsService;
 
     @Autowired
-    public void setGlobalSecretsService(GlobalSecretsService globalSecretsService){
+    public void setGlobalSecretsService(GlobalSecretsService globalSecretsService) {
         this.globalSecretsService = globalSecretsService;
     }
 
-    @RequestMapping(value = "/global", method = RequestMethod.GET)
-    public String list(Model model){
-        model.addAttribute("/global", globalSecretsService.listAllSecrets());
-        System.out.println("Returned all global secrets:  "+ globalSecretsService.listAllSecrets());
-        return "global";
+    @RequestMapping(value = "globals", method = RequestMethod.GET)
+    public String list(Model model) {
+        model.addAttribute("globals", globalSecretsService.listAllSecrets());
+        List<GlobalSecret> list = (List<GlobalSecret>) globalSecretsService.listAllSecrets();
+        list.forEach(i -> {
+            System.out.println("List: " + i.toString());
+        });
+        return "globals";
     }
 
     @RequestMapping("global/{id}")
-    public String showGlobalSecret(@PathVariable Integer id, Model model){
+    public String showGlobalSecret(@PathVariable Integer id, Model model) {
         model.addAttribute("global", globalSecretsService.getSecretById(id));
         return "globalshow";
     }
 
     @RequestMapping("global/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model){
+    public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("global", globalSecretsService.getSecretById(id));
-        return "globalshow";
+        return "globalform";
     }
 
     @RequestMapping("global/new")
-    public String newProduct(Model model){
+    public String newProduct(Model model) {
         model.addAttribute("global", new GlobalSecret());
-        return "globalshow";
+        return "globalform";
     }
 
     @RequestMapping(value = "global", method = RequestMethod.POST)
-    public String saveGlobalSecret(GlobalSecret globalSecret){
+    public String saveGlobalSecret(GlobalSecret globalSecret) {
 
         globalSecretsService.saveSecret(globalSecret);
 
