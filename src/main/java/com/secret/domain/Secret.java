@@ -4,21 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Arrays;
 
 /**
  * Created by nicola on 06.10.17.
  */
 
 @Entity
-public class GlobalSecret {
-
+public class Secret {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
-    private String event;
+    private String[] event;
 
     public Integer getId() {
         return id;
@@ -36,11 +34,11 @@ public class GlobalSecret {
         this.name = name;
     }
 
-    public String getEvent() {
+    public String[] getEvent() {
         return event;
     }
 
-    public void setEvent(String event) {
+    public void setEvent(String[] event) {
         this.event = event;
     }
 
@@ -49,7 +47,7 @@ public class GlobalSecret {
         return "{" +
                 "id='" + id + '\'' +
                 ", name='" + name+ '\'' +
-                ", event='" + event+ '\'' +
+                ", event='" + Arrays.toString(event)+ '\'' +
                 '}';
     }
 

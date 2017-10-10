@@ -11,9 +11,9 @@ import javax.persistence.Id;
 public class Repository {
     @Id
     private Integer id;
-    private String fullname;
+    private String owner;
+    private String name;
     private Integer timeout;
-    private String link_url;
 
     public Integer getId() {
         return id;
@@ -21,14 +21,6 @@ public class Repository {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
     }
 
     public Integer getTimeout() {
@@ -39,21 +31,29 @@ public class Repository {
         this.timeout = timeout;
     }
 
-    public String getLink_url() {
-        return link_url;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setLink_url(String link_url) {
-        this.link_url = link_url;
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "{" +
                 "id='" + id + '\'' +
-                ", fullname='" + fullname + '\'' +
+                ", owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
                 ", timeout='" + timeout + '\'' +
-                ", link_url='" + link_url + '\'' +
                 '}';
     }
 }

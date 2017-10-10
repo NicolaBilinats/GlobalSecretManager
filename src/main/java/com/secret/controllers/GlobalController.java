@@ -1,7 +1,7 @@
 package com.secret.controllers;
 
-import com.secret.domain.GlobalSecret;
-import com.secret.services.GlobalSecretsService;
+import com.secret.domain.Secret;
+import com.secret.services.SecretsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,20 +17,16 @@ import java.util.List;
 @Controller
 public class GlobalController {
 
-    private GlobalSecretsService globalSecretsService;
+    private SecretsService globalSecretsService;
 
     @Autowired
-    public void setGlobalSecretsService(GlobalSecretsService globalSecretsService) {
+    public void setGlobalSecretsService(SecretsService globalSecretsService) {
         this.globalSecretsService = globalSecretsService;
     }
 
     @RequestMapping(value = "globals", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("globals", globalSecretsService.listAllSecrets());
-        List<GlobalSecret> list = (List<GlobalSecret>) globalSecretsService.listAllSecrets();
-        list.forEach(i -> {
-            System.out.println("List: " + i.toString());
-        });
         return "globals";
     }
 
@@ -48,12 +44,12 @@ public class GlobalController {
 
     @RequestMapping("global/new")
     public String newProduct(Model model) {
-        model.addAttribute("global", new GlobalSecret());
+        model.addAttribute("global", new Secret());
         return "globalform";
     }
 
     @RequestMapping(value = "global", method = RequestMethod.POST)
-    public String saveGlobalSecret(GlobalSecret globalSecret) {
+    public String saveGlobalSecret(Secret globalSecret) {
 
         globalSecretsService.saveSecret(globalSecret);
 

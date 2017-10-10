@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Global Secret Manager</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <div class="table-responsive" th:if="${not #lists.isEmpty(repo)}">
+        <h2>Global List</h2>
+        <table class="table table-striped table-hover">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Event</th>
+                <th>View</th>
+                <th>Edit</th>
+            </tr>
+            <tr th:each="r : ${repo}">
+                <td th:text="${r.id}"><a href="/global//${global.id}">Id</a></td>
+                <td th:text="${r.name}">Name</td>
+                <td th:text="${r.event}">Event</td>
+                <td><a th:href="${ '/repo/' + r.id}">View</a></td>
+                <td><a th:href="${'/repos/edit/' + r.id}">Edit</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

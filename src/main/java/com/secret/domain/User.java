@@ -11,20 +11,13 @@ import javax.persistence.Id;
 /**
  * Created by nicola on 09.10.17.
  */
-//@JsonIgnoreProperties()
 @Entity
 public class User {
     @Id
-//    @JsonProperty("id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @JsonProperty("login")
     private String login;
-//    @JsonProperty("email")
     private String email;
-//    @JsonProperty("avatar_url")
     private String avatar_url;
-//    @JsonProperty("active")
     private String active;
 
     private String getAvatar_url() {
