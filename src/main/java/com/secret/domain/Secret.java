@@ -47,7 +47,7 @@ public class Secret {
         return "{" +
                 "id='" + id + '\'' +
                 ", name='" + name+ '\'' +
-                ", event='" + Arrays.toString(event)+ '\'' +
+                ", event='" + event+ '\'' +
                 '}';
     }
 
