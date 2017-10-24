@@ -15,18 +15,76 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Event</th>
-                <th>View</th>
-                <th>Edit</th>
+                <th>Action</th>
             </tr>
             <tr th:each="global : ${globals}">
                 <td th:text="${global.id}"><a href="/global//${global.id}">Id</a></td>
                 <td th:text="${global.name}">Name</td>
-                <td th:text="${global.event}">Event</td>
-                <td><a th:href="${ '/global/' + global.id}">View</a></td>
-                <td><a th:href="${'/global/edit/' + global.id}">Edit</a></td>
+                <td th:text="${#strings.arrayJoin(global.event, ',')}">Event</td>
+                <td><a th:href="${ '/global/' + global.id}">View  </a><a th:href="${'/global/edit/' + global.id}">Edit  </a><a th:href="@{'/globals/' + ${global.id}}">Delete  </a></td>
             </tr>
         </table>
     </div>
+    <!--<form class="form-horizontal" >-->
+    <div class="table-responsive" >
+        <!--<label >Rows</label>-->
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th >Name</th>
+                <th >Value</th>
+                <th >Event</th>
+                <th>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr >
+                <form th:object="${global}" th:action="@{/global}" method="post">
+                    <input type="hidden" th:field="*{id}"/>
+
+                    <td>
+                    <div class="form-group">
+                        <input type="text" class="form-control" th:field="*{name}"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="text" class="form-control"/>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="text" class="form-control" th:field="*{event}"/>
+                    </div>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-raised btn-primary">Submit</button>
+                </td>
+                </form>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!--<form class="form-horizontal" th:object="${global}" th:action="@{/global}" method="post">-->
+        <!--<input type="hidden" th:field="*{id}"/>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">Name:</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<input type="text" class="form-control" th:field="*{name}"/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">Event:</label>-->
+            <!--<div class="col-sm-10">-->
+                <!--<input type="text" class="form-control" th:field="*{event}"/>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<button type="submit" class="btn btn-raised btn-primary">Submit</button>-->
+        <!--</div>-->
+    <!--</form>-->
 </div>
 <!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
 

@@ -39,4 +39,9 @@ public class SecretsServiceImpl implements SecretsService{
     public void cleanSecret() {
         secretRepo.deleteAll();
     }
+
+//    @Override
+//    public long getLenght() {
+//        return secretRepo.count();
+//    }
 }

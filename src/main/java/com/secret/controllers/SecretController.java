@@ -1,12 +1,14 @@
 package com.secret.controllers;
 
+//import com.secret.bootstrap.DBMonitoring;
+import com.secret.bootstrap.DBMonitoring;
 import com.secret.domain.Secret;
-import com.secret.services.RepositoryService;
 import com.secret.services.SecretsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +22,6 @@ import java.util.logging.Logger;
 
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
 
 /**
  * Created by nicola on 10.10.17.
@@ -30,6 +31,13 @@ import static org.springframework.http.HttpMethod.POST;
 public class SecretController {
     @Value("${token}")
     private String token;
+
+    @Value("${url.repos}")
+    private String URL_;
+
+    private String url;
+
+    private String apiUrl;
 
     private Logger log = Logger.getLogger(String.valueOf(RepoController.class));
 
@@ -44,29 +52,30 @@ public class SecretController {
     @RequestMapping(value = "repos/{owner}/{name:.+}", method = RequestMethod.GET, produces = "application/json")
     public String getSecrets(@PathVariable String owner, @PathVariable String name, Model model) {
         String[] e = {"Push", "Tag", "Deployment", "Pull Request"};
+        List<Secret> result;
         secretsService.cleanSecret();
-        String url = "https://drone.ts-t.ru/api/repos/".concat(owner).concat("/").concat(name).concat("/secrets");
+        url = URL_.concat(owner).concat("/").concat(name).concat("/secrets");
+        apiUrl = "/repos/".concat(owner).concat("/").concat(name);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        List<Secret> result = Arrays.asList(restTemplate.exchange(url, GET, entity, Secret[].class).getBody());
+        result = Arrays.asList(restTemplate.exchange(url, GET, entity, Secret[].class).getBody());
         result.forEach(i -> {
-            Secret secret = new Secret();
-            secret.setId(i.getId());
-            secret.setName(i.getName());
-            secret.setEvent(i.getEvent());
+            Secret secret = new Secret(i.getId(),i.getName(),i.getEvent());
             secretsService.saveSecret(secret);
         });
         model.addAttribute("secrets", secretsService.listAllSecrets());
+        DBMonitoring dbMonitoring = new DBMonitoring();
         model.addAttribute("repos", name);
-        model.addAttribute("event", e);
+        model.addAttribute("url", url);
+        model.addAttribute("secret", new Secret());
         return "secrets";
     }
 
     @RequestMapping("repos/{owner}/{name:.+}/{secretName}")
-    public String deleteSecret(@PathVariable String owner,@PathVariable String name,@PathVariable String secretName) {
-        String url = "https://drone.ts-t.ru/api/repos/".concat(owner).concat("/").concat(name).concat("/secrets/".concat(secretName));
+    public String deleteSecret(@PathVariable String owner, @PathVariable String name, @PathVariable String secretName) {
+        String url = URL_.concat(owner).concat("/").concat(name).concat("/secrets/".concat(secretName));
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
@@ -75,9 +84,24 @@ public class SecretController {
         return "redirect:/repos/".concat(owner).concat("/").concat(name);
     }
 
-//    @RequestMapping()
-//    public String createSecret(String owner, String name){
-//        return "redirect:/repos/".concat(owner).concat("/").concat(name);
-//    }
+
+    @RequestMapping(value = "secret", method = RequestMethod.POST)
+    public String postSecret(Secret secret) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<String>(secret.toString(), headers);
+        try {
+            restTemplate.postForEntity(url, request, String.class);
+        }catch (Exception e){
+            System.out.println("MAP: "+request);
+            System.out.println("BODY: "+request.getBody());
+            System.out.println("BODY: "+request.getHeaders());
+            System.out.println("BODY: "+request.toString());
+            e.printStackTrace();
+        }
+        return "redirect:".concat(apiUrl);
+    }
 
 }

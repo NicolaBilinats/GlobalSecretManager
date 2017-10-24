@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Created by nicola on 06.10.17.
  */
+
 @Configuration
 public class WebConfiguration {
     @Bean

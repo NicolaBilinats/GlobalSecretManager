@@ -1,9 +1,7 @@
 package com.secret.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -16,7 +14,17 @@ public class Secret {
     @Id
     private Integer id;
     private String name;
+    private String value;
     private String[] event;
+
+    public Secret(Integer id, String name, String[] event) {
+        this.id = id;
+        this.name = name;
+        this.event = event;
+    }
+
+    public Secret() {
+    }
 
     public Integer getId() {
         return id;
@@ -34,6 +42,14 @@ public class Secret {
         this.name = name;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
     public String[] getEvent() {
         return event;
     }
@@ -41,13 +57,30 @@ public class Secret {
     public void setEvent(String[] event) {
         this.event = event;
     }
+    public String transformEvent(String[] event){
+        return Arrays.toString(event);
+    }
+
+
+    public String transformStr(String str){
+        StringBuilder builder = new StringBuilder();
+        String[] a = str.replaceAll("\\[|\\]", "").split("[,]");
+        for (int i = 0; i < a.length; i++) {
+            if (i < a.length-1){
+                builder.append("\"".concat(a[i]).concat("\"").concat(","));
+            }else {
+                builder.append("\"".concat(a[i]).concat("\""));
+            }
+        }
+        return "[".concat(String.valueOf(builder)).concat("]");
+    }
 
     @Override
     public String toString() {
         return "{" +
-                "id='" + id + '\'' +
-                ", name='" + name+ '\'' +
-                ", event='" + event+ '\'' +
+                "\"name\":"+'\"' + name+ '\"' +
+                ",\"value\":"+'\"' + value+ '\"' +
+                ",\"event\":" + transformStr(Arrays.toString(event))+
                 '}';
     }
 

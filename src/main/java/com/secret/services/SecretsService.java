@@ -14,5 +14,7 @@ public interface SecretsService {
     Secret saveSecret(Secret secret);
 
     void cleanSecret();
+
+//    long getLenght();
 }
 
