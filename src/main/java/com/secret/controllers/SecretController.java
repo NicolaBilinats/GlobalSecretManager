@@ -62,11 +62,11 @@ public class SecretController {
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
         result = Arrays.asList(restTemplate.exchange(url, GET, entity, Secret[].class).getBody());
         result.forEach(i -> {
-            Secret secret = new Secret(i.getId(),i.getName(),i.getEvent());
+            Secret secret = new Secret.Builder().setId(i.getId()).setName(i.getName()).setEvent(i.getEvent()).build();
             secretsService.saveSecret(secret);
         });
         model.addAttribute("secrets", secretsService.listAllSecrets());
-        DBMonitoring dbMonitoring = new DBMonitoring();
+//        DBMonitoring dbMonitoring = new DBMonitoring();
         model.addAttribute("repos", name);
         model.addAttribute("url", url);
         model.addAttribute("secret", new Secret());
@@ -95,10 +95,6 @@ public class SecretController {
         try {
             restTemplate.postForEntity(url, request, String.class);
         }catch (Exception e){
-            System.out.println("MAP: "+request);
-            System.out.println("BODY: "+request.getBody());
-            System.out.println("BODY: "+request.getHeaders());
-            System.out.println("BODY: "+request.toString());
             e.printStackTrace();
         }
         return "redirect:".concat(apiUrl);

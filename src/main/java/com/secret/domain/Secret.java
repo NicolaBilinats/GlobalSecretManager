@@ -17,13 +17,13 @@ public class Secret {
     private String value;
     private String[] event;
 
+    public Secret() {
+    }
+
     public Secret(Integer id, String name, String[] event) {
         this.id = id;
         this.name = name;
         this.event = event;
-    }
-
-    public Secret() {
     }
 
     public Integer getId() {
@@ -59,6 +59,35 @@ public class Secret {
     }
     public String transformEvent(String[] event){
         return Arrays.toString(event);
+    }
+
+    public static class Builder {
+        private Integer id;
+        private String name;
+        private String[] event;
+
+        public Builder(){
+
+        }
+
+        public Builder setId(Integer id){
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setEvent(String[] event) {
+            this.event = event;
+            return this;
+        }
+
+        public Secret build(){
+            return new Secret(id, name, event);
+        }
     }
 
 

@@ -16,4 +16,6 @@ public interface GlobalSecretService {
     void cleanGlobalSecret();
 
     void deleteGlobalSecretById(Integer id);
+
+    long getLenght();
 }

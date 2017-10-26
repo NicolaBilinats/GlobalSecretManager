@@ -42,4 +42,9 @@ public class GlobalSecretServiceImpl implements GlobalSecretService{
     public void deleteGlobalSecretById(Integer id) {
         globalSercretRepo.delete(id);
     }
+
+    @Override
+    public long getLenght() {
+        return globalSercretRepo.count();
+    }
 }
