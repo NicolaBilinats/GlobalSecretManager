@@ -8,4 +8,5 @@ import com.secret.domain.User;
 public interface UserService {
     Iterable<User> listAllUsers();
     User getUserById(Integer id);
+    User saveUser(User user);
 }

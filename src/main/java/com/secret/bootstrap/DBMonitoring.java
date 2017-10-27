@@ -24,7 +24,7 @@ public class DBMonitoring extends Thread {
         try {
             while (true) {
                 System.out.println(Thread.currentThread().getName());
-                thread.sleep(3000);
+                thread.sleep(5000);
                 for (GlobalSecret i : globalSecretService.listAllGlobalSecrets())
                 {
                     System.out.println("Element: " + i);

@@ -51,7 +51,6 @@ public class SecretController {
 
     @RequestMapping(value = "repos/{owner}/{name:.+}", method = RequestMethod.GET, produces = "application/json")
     public String getSecrets(@PathVariable String owner, @PathVariable String name, Model model) {
-        String[] e = {"Push", "Tag", "Deployment", "Pull Request"};
         List<Secret> result;
         secretsService.cleanSecret();
         url = URL_.concat(owner).concat("/").concat(name).concat("/secrets");

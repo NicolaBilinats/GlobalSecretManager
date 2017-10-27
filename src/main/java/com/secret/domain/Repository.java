@@ -15,6 +15,17 @@ public class Repository {
     private String name;
     private Integer timeout;
 
+    public Repository(){
+
+    }
+
+    public Repository(Integer id, String owner, String name, Integer timeout) {
+        this.id = id;
+        this.owner = owner;
+        this.name = name;
+        this.timeout = timeout;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -45,6 +56,37 @@ public class Repository {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static class Builder {
+        private Integer id;
+        private String owner;
+        private String name;
+        private Integer timeout;
+
+        public Builder setId(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setOwner(String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setTimeout(Integer timeout) {
+            this.timeout = timeout;
+            return this;
+        }
+
+        public Repository build(){
+            return new Repository(id, owner, name, timeout);
+        }
     }
 
     @Override

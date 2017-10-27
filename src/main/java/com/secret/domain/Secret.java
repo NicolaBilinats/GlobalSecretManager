@@ -57,6 +57,7 @@ public class Secret {
     public void setEvent(String[] event) {
         this.event = event;
     }
+
     public String transformEvent(String[] event){
         return Arrays.toString(event);
     }

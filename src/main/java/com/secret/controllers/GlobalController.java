@@ -1,10 +1,12 @@
 package com.secret.controllers;
 
 import com.secret.bootstrap.Consumer;
-import com.secret.bootstrap.Producer;
 import com.secret.domain.GlobalSecret;
+import com.secret.domain.Repository;
+import com.secret.domain.Secret;
 import com.secret.services.GlobalSecretService;
 import com.secret.services.RepositoryService;
+import com.secret.services.SecretsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -19,10 +21,12 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
 
 /**
  * Created by nicola on 06.10.17.
@@ -40,6 +44,8 @@ public class GlobalController {
 
     private RepositoryService repositoryService;
 
+    private SecretsService secretsService;
+
     @Autowired
     public void setGlobalSecretsService(GlobalSecretService globalSecretsService) {
         this.globalSecretsService = globalSecretsService;
@@ -48,6 +54,11 @@ public class GlobalController {
     @Autowired
     public void setRepositoryService(RepositoryService repositoryService) {
         this.repositoryService = repositoryService;
+    }
+
+    @Autowired
+    public void setSecretsService(SecretsService secretsService) {
+        this.secretsService = secretsService;
     }
 
     @RequestMapping(value = "globals", method = RequestMethod.GET)
@@ -109,12 +120,30 @@ public class GlobalController {
 
     @RequestMapping("globals/{id}/{secretName}")
     public String deleteGlobalSecret(@PathVariable Integer id, @PathVariable String secretName){
+        List<Repository> rep = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        repositoryService.listAllRepos().forEach(
-                k -> restTemplate.exchange(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets/").concat(secretName),DELETE, entity, String.class)
+        for (Repository list : repositoryService.listAllRepos()){
+          for (Secret l : Arrays.asList(restTemplate
+                  .exchange(URL_.concat(list.getOwner()).concat("/").concat(list.getName().concat("/secrets/")), GET, entity, Secret[].class)
+                  .getBody())){
+              if (l.getName().equals(secretName)){
+                  rep.add(list);
+                  System.out.println("Repo added to list for deleting: " + list);
+              }
+          }
+        }
+        for (Repository o : rep){
+            System.out.println("Repos for deleting: " + o);
+        }
+        rep.forEach(
+                k ->  restTemplate
+                        .exchange(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets/").concat(secretName),
+                                DELETE,
+                                entity,
+                                String.class)
         );
         globalSecretsService.deleteGlobalSecretById(id);
         return "redirect:/globals";

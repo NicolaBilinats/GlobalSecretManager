@@ -28,4 +28,9 @@ public class RepositoryServiceImpl implements RepositoryService{
     public Repository getRepoById(Integer id) {
         return repositoryRepo.findOne(id);
     }
+
+    @Override
+    public Repository save(Repository repository) {
+        return repositoryRepo.save(repository);
+    }
 }

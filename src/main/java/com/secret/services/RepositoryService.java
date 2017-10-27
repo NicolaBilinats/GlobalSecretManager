@@ -9,4 +9,5 @@ import com.secret.domain.Secret;
 public interface RepositoryService {
     Iterable<Repository> listAllRepos();
     Repository getRepoById(Integer id);
+    Repository save(Repository repository);
 }
