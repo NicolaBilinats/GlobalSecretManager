@@ -69,12 +69,6 @@ public class GlobalController {
         return "globalform";
     }
 
-//    @RequestMapping(value = "globals", method = RequestMethod.POST)
-//    public String newProduct(Model model) {
-//        model.addAttribute("global", new GlobalSecret());
-//        return "globals";
-//    }
-
     @RequestMapping(value = "global", method = RequestMethod.POST)
     public String saveGlobalSecret(GlobalSecret globalSecret) {
         System.out.println("Global Secret to query: " + globalSecret);
@@ -82,7 +76,6 @@ public class GlobalController {
         queue.add(globalSecret);
         Thread consumer = new Thread(new Consumer(queue));
         for (int i = 0; i < queue.size(); i++) {
-
             System.out.println("QUEUE start: " + queue);
             GlobalSecret secretFromQueue = queue.peek();
             RestTemplate restTemplate = new RestTemplate();
@@ -92,7 +85,10 @@ public class GlobalController {
             HttpEntity<String> request = new HttpEntity<String>(secretFromQueue.toString(), headers);
             try {
                 repositoryService.listAllRepos().forEach(
-                        k ->  globalSecret.setStatus(restTemplate.postForEntity(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets"), request, String.class).getStatusCode().value())
+                        k ->  globalSecret.setStatus(restTemplate
+                                .postForEntity(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets"), request, String.class)
+                                .getStatusCode()
+                                .value())
                 );
                 System.out.println("Status: "+globalSecret.getStatus());
                 if (globalSecret.getStatus()==200){
@@ -111,15 +107,30 @@ public class GlobalController {
         return "redirect:/globals";
     }
 
-    @RequestMapping("globals/{id}")
-    public String deleteGlobalSecret(@PathVariable Integer id){
-//        String url = URL_.concat("HAAK/t.vileno/secrets/nicola");
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", token);
-//        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-//        restTemplate.exchange(url, DELETE, entity, String.class);
+    @RequestMapping("globals/{id}/{secretName}")
+    public String deleteGlobalSecret(@PathVariable Integer id, @PathVariable String secretName){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+        repositoryService.listAllRepos().forEach(
+                k -> restTemplate.exchange(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets/").concat(secretName),DELETE, entity, String.class)
+        );
         globalSecretsService.deleteGlobalSecretById(id);
         return "redirect:/globals";
     }
 }
+
+
+
+
+//  globalSecret.setStatus(restTemplate
+//                        .postForEntity(URL_.concat("/HAAK/t.vileno").concat("/secrets"), request, String.class)
+//                        .getStatusCode()
+//                        .value());
+
+// try{
+//            restTemplate.exchange(URL_.concat("/HAAK/t.vileno").concat("/secrets/").concat(secretName),DELETE, entity, String.class);
+//        } catch (HttpServerErrorException e){
+//            e.printStackTrace();
+//        }

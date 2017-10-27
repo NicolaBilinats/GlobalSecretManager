@@ -4,7 +4,6 @@ import com.secret.domain.Repository;
 import com.secret.repositories.RepositoryRepo;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -17,6 +16,7 @@ import java.util.List;
 /**
  * Created by nicola on 10.10.17.
  */
+
 @Component
 public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -28,12 +28,11 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private RepositoryRepo repositoryRepo;
 
-    private Logger log = Logger.getLogger(ReposLoader.class);
-
     @Autowired
     public void setRepositoryRepo(RepositoryRepo repositoryRepo) {
         this.repositoryRepo = repositoryRepo;
     }
+
     public List<Repository> getReq() {
         List<Repository> response = null;
         try {

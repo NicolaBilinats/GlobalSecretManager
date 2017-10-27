@@ -7,6 +7,7 @@ import com.sun.jersey.api.client.WebResource;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by nicola on 09.10.17.
  */
 @Component
-public class UsersLoader implements ApplicationListener<ContextRefreshedEvent> {
+public class UsersLoader implements ApplicationListener<ApplicationStartingEvent> {
 
     @Value("${token}")
     private String token;
@@ -49,7 +50,7 @@ public class UsersLoader implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void onApplicationEvent(ApplicationStartingEvent applicationStartingEvent) {
         getReq().forEach(i -> {
             User user = new User();
             user.setId(i.getId());

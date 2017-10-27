@@ -21,7 +21,9 @@
                 <td th:text="${global.id}"><a href="/global//${global.id}">Id</a></td>
                 <td th:text="${global.name}">Name</td>
                 <td th:text="${#strings.arrayJoin(global.event, ',')}">Event</td>
-                <td><a th:href="${ '/global/' + global.id}">View  </a><a th:href="${'/global/edit/' + global.id}">Edit  </a><a th:href="@{'/globals/' + ${global.id}}">Delete  </a></td>
+                <td><a th:href="${'/global/' + global.id }">View  </a>
+                    <a th:href="${'/global/edit/' + global.id}">Edit  </a>
+                    <a th:href="@{'/globals/' + ${global.id} + '/' + ${global.name}}">Delete  </a></td>
             </tr>
         </table>
     </div>
