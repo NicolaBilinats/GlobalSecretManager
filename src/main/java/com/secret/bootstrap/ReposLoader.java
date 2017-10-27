@@ -54,6 +54,8 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
                         .build();
                 repositoryService.save(repository);
             });
+        } else {
+            System.out.println("Drone is not working");
         }
     }
 

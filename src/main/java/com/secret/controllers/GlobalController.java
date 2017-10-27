@@ -82,6 +82,7 @@ public class GlobalController {
 
     @RequestMapping(value = "global", method = RequestMethod.POST)
     public String saveGlobalSecret(GlobalSecret globalSecret) {
+        List<Repository> repToCreate = new ArrayList<>();
         System.out.println("Global Secret to query: " + globalSecret);
         ConcurrentLinkedQueue<GlobalSecret> queue = new ConcurrentLinkedQueue<>();
         queue.add(globalSecret);
@@ -94,8 +95,22 @@ public class GlobalController {
             headers.set("Authorization", token);
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<String> request = new HttpEntity<String>(secretFromQueue.toString(), headers);
+            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+            for (Repository list : repositoryService.listAllRepos()){
+                for (Secret l : Arrays.asList(restTemplate
+                        .exchange(URL_.concat(list.getOwner()).concat("/").concat(list.getName().concat("/secrets/")), GET, entity, Secret[].class)
+                        .getBody())){
+                    if (!l.getName().equals(secretFromQueue.getName())){
+                        repToCreate.add(list);
+                        System.out.println("Repo added to list for deleting: " + list);
+                    }
+                }
+            }
+            for (Repository p : repToCreate){
+                System.out.println(p);
+            }
             try {
-                repositoryService.listAllRepos().forEach(
+                repToCreate.forEach(
                         k ->  globalSecret.setStatus(restTemplate
                                 .postForEntity(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets"), request, String.class)
                                 .getStatusCode()
@@ -120,7 +135,7 @@ public class GlobalController {
 
     @RequestMapping("globals/{id}/{secretName}")
     public String deleteGlobalSecret(@PathVariable Integer id, @PathVariable String secretName){
-        List<Repository> rep = new ArrayList<>();
+        List<Repository> repToDelete = new ArrayList<>();
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
@@ -130,36 +145,19 @@ public class GlobalController {
                   .exchange(URL_.concat(list.getOwner()).concat("/").concat(list.getName().concat("/secrets/")), GET, entity, Secret[].class)
                   .getBody())){
               if (l.getName().equals(secretName)){
-                  rep.add(list);
+                  repToDelete.add(list);
                   System.out.println("Repo added to list for deleting: " + list);
               }
           }
         }
-        for (Repository o : rep){
-            System.out.println("Repos for deleting: " + o);
-        }
-        rep.forEach(
-                k ->  restTemplate
-                        .exchange(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets/").concat(secretName),
-                                DELETE,
-                                entity,
-                                String.class)
-        );
+        repToDelete.forEach(
+                    k ->  restTemplate
+                            .exchange(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets/").concat(secretName),
+                                    DELETE,
+                                    entity,
+                                    String.class)
+            );
         globalSecretsService.deleteGlobalSecretById(id);
         return "redirect:/globals";
     }
 }
-
-
-
-
-//  globalSecret.setStatus(restTemplate
-//                        .postForEntity(URL_.concat("/HAAK/t.vileno").concat("/secrets"), request, String.class)
-//                        .getStatusCode()
-//                        .value());
-
-// try{
-//            restTemplate.exchange(URL_.concat("/HAAK/t.vileno").concat("/secrets/").concat(secretName),DELETE, entity, String.class);
-//        } catch (HttpServerErrorException e){
-//            e.printStackTrace();
-//        }
