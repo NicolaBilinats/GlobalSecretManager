@@ -46,7 +46,7 @@ public class UsersLoader implements ApplicationListener<ContextRefreshedEvent> {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        if (restTemplate.exchange(url, GET, entity, User[].class).getStatusCode().value() == 200){
+        if (restTemplate.exchange(url, GET, entity, User[].class).getStatusCode().value() == 200) {
             Arrays.asList(restTemplate.exchange(url, GET, entity, User[].class).getBody()).forEach(i -> {
                 User user = new User.Builder()
                         .setId(i.getId())

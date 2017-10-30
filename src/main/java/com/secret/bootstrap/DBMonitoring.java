@@ -2,7 +2,6 @@ package com.secret.bootstrap;
 
 import com.secret.domain.GlobalSecret;
 import com.secret.services.GlobalSecretService;
-import com.secret.services.SecretsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

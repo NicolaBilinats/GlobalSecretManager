@@ -1,7 +1,5 @@
 package com.secret.controllers;
 
-//import com.secret.bootstrap.DBMonitoring;
-import com.secret.bootstrap.DBMonitoring;
 import com.secret.domain.Secret;
 import com.secret.services.SecretsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
@@ -38,8 +35,6 @@ public class SecretController {
     private String url;
 
     private String apiUrl;
-
-    private Logger log = Logger.getLogger(String.valueOf(RepoController.class));
 
     private SecretsService secretsService;
 
@@ -65,7 +60,6 @@ public class SecretController {
             secretsService.saveSecret(secret);
         });
         model.addAttribute("secrets", secretsService.listAllSecrets());
-//        DBMonitoring dbMonitoring = new DBMonitoring();
         model.addAttribute("repos", name);
         model.addAttribute("url", url);
         model.addAttribute("secret", new Secret());
@@ -93,7 +87,7 @@ public class SecretController {
         HttpEntity<String> request = new HttpEntity<String>(secret.toString(), headers);
         try {
             restTemplate.postForEntity(url, request, String.class);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "redirect:".concat(apiUrl);

@@ -1,7 +1,6 @@
 package com.secret.bootstrap;
 
 import com.secret.domain.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

@@ -233,6 +233,10 @@ input:focus ~ .highlight {
     animation: ripples .4s ease-in;
 }
 
+.form-login {
+    width: 480px;
+}
+
 
 /* Ripples animation */
 

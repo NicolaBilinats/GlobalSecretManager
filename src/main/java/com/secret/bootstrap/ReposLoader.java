@@ -1,10 +1,7 @@
 package com.secret.bootstrap;
 
 import com.secret.domain.Repository;
-import com.secret.repositories.RepositoryRepo;
 import com.secret.services.RepositoryService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 
