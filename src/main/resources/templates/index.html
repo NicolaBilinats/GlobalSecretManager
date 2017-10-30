@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
 <head lang="en">
 
     <title>Global Secret Manager</title>
@@ -10,7 +11,7 @@
 
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-
+    <h2 th:text="#{welcome.message}"></h2>
 
 </div>
 <!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="lang=${#locale.language}" th:lang="${lang}">
 <head lang="en">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../static/css/bootstrap/dist/css/bootstrap.css" th:href="@{/css/bootstrap/dist/css/bootstrap.css}" rel="stylesheet" media="screen"/>
@@ -26,14 +27,19 @@
                     <a class="navbar-brand" rel="home" href="#" th:href="@{/}">
                     <img style="max-width:100%; max-height: 100%;" th:src="@{/images/drone.png}"/>
                     </a>
-                    <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
+                    <a class="navbar-brand" href="#" th:href="@{/}" th:text="#{home}">Home</a>
                     <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/users}">Users</a></li>
-                        <li><a href="#" th:href="@{/repos}">Repositories</a></li>
-                        <li><a href="#" th:href="@{/globals}">Global Secrets</a></li>
+                        <li><a href="#" th:href="@{/users}" th:text="#{users}">Users</a></li>
+                        <li><a href="#" th:href="@{/repos}" th:text="#{repositories}">Repositories</a></li>
+                        <li><a href="#" th:href="@{/globals}" th:text="#{global.secrets}">Global Secrets</a></li>
+                    </ul>
+                </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="?language=en">En</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-sort"></span></a></li>
+                        <li><a href="?language=ru">Ru</a></li>
                     </ul>
 
-                </div>
         </div>
     </div>
 </div>

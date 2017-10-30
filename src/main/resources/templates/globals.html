@@ -9,21 +9,21 @@
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
 
     <div class="table-responsive" th:if="${not #lists.isEmpty(globals)}">
-        <h2>Global List</h2>
+        <h2 th:text="#{global.secrets}">Global List</h2>
         <table class="table table-striped table-hover">
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Event</th>
-                <th>Action</th>
+                <th th:text="#{id}">Id</th>
+                <th th:text="#{name}">Name</th>
+                <th th:text="#{event}">Event</th>
+                <th th:text="#{action}">Action</th>
             </tr>
             <tr th:each="global : ${globals}">
                 <td th:text="${global.id}"><a href="/global//${global.id}">Id</a></td>
                 <td th:text="${global.name}">Name</td>
                 <td th:text="${#strings.arrayJoin(global.event, ',')}">Event</td>
-                <td><a th:href="${'/global/' + global.id }">View  </a>
-                    <a th:href="${'/global/edit/' + global.id}">Edit  </a>
-                    <a th:href="@{'/globals/' + ${global.id} + '/' + ${global.name}}">Delete  </a></td>
+                <td><a th:href="${'/global/' + global.id }" th:text="#{view}">View  </a>
+                    <a th:href="${'/global/edit/' + global.id}" th:text="#{edit}">Edit  </a>
+                    <a th:href="@{'/globals/' + ${global.id} + '/' + ${global.name}}" th:text="#{delete}">Delete  </a></td>
             </tr>
         </table>
     </div>
@@ -33,9 +33,9 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th >Name</th>
-                <th >Value</th>
-                <th >Event</th>
+                <th th:text="#{name}">Name</th>
+                <th th:text="#{value}">Value</th>
+                <th th:text="#{event}">Event</th>
                 <th>
                 </th>
             </tr>

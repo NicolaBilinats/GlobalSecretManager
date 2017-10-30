@@ -14,13 +14,13 @@
         <form class="form-horizontal" th:object="${global}" th:action="@{/global}" method="post">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Name:</label>
+                <label class="col-sm-2 control-label" th:text="#{name}">Name:</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{name}"/>
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Event:</label>
+                <label class="col-sm-2 control-label" th:text="#{event}">Event:</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{event}"/>
                 </div>
