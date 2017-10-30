@@ -11,7 +11,12 @@
 
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
-    <h2 th:text="#{welcome.message}"></h2>
+    <h2 style="text-align: center" th:text="#{welcome.message}"></h2>
+    <label>Введите ваш токен</label>
+    <!--<form th:object="${token}" th:action="@{/}" method="post">-->
+        <!--<input type="text" class="form-control" th:field="${token}"/>-->
+        <!--<button type="submit" class="btn btn-raised btn-primary">Submit</button>-->
+    <!--</form>-->
 
 </div>
 <!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
