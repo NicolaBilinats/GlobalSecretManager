@@ -1,3 +1,4 @@
+language: java
 FROM openjdk:8-jdk-slim AS builder
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
