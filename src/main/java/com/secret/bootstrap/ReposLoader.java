@@ -9,6 +9,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -40,17 +41,18 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        if (restTemplate.exchange(url, GET, entity, Repository[].class).getStatusCode().value() == 200){
+        try{
             Arrays.asList(restTemplate.exchange(url, GET, entity, Repository[].class).getBody()).forEach(i -> {
-                Repository repository = new Repository.Builder()
-                        .setId(i.getId())
-                        .setOwner(i.getOwner())
-                        .setName(i.getName())
-                        .setTimeout(i.getTimeout())
+                Repository repository = Repository.builder()
+                        .id(i.getId())
+                        .owner(i.getOwner())
+                        .name(i.getName())
+                        .timeout(i.getTimeout())
                         .build();
                 repositoryService.save(repository);
             });
-        } else {
+        } catch (HttpClientErrorException e){
+            e.printStackTrace();
             System.out.println("Drone is not working");
         }
     }

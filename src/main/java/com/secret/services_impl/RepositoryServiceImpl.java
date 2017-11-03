@@ -1,7 +1,8 @@
-package com.secret.services;
+package com.secret.services_impl;
 
 import com.secret.domain.Repository;
 import com.secret.repositories.RepositoryRepo;
+import com.secret.services.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class RepositoryServiceImpl implements RepositoryService{
+public class RepositoryServiceImpl implements RepositoryService {
 
     private RepositoryRepo repositoryRepo;
 

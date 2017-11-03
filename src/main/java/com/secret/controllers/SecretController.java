@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -54,16 +55,30 @@ public class SecretController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        result = Arrays.asList(restTemplate.exchange(url, GET, entity, Secret[].class).getBody());
-        result.forEach(i -> {
-            Secret secret = new Secret.Builder().setId(i.getId()).setName(i.getName()).setEvent(i.getEvent()).build();
-            secretsService.saveSecret(secret);
-        });
-        model.addAttribute("secrets", secretsService.listAllSecrets());
-        model.addAttribute("repos", name);
-        model.addAttribute("url", url);
-        model.addAttribute("secret", new Secret());
-        return "secrets";
+        try {
+            result = Arrays.asList(restTemplate.exchange(url, GET, entity, Secret[].class).getBody());
+            result.forEach(i -> {
+                Secret secret = Secret.builder()
+                        .id(i.getId())
+                        .name(i.getName())
+                        .event(i.getEvent())
+                        .build();
+                secretsService.saveSecret(secret);
+            });
+            model.addAttribute("secrets", secretsService.listAllSecrets());
+            model.addAttribute("repos", name);
+            model.addAttribute("url", url);
+            model.addAttribute("secret", new Secret());
+            return "secrets";
+        } catch (HttpClientErrorException e){
+//            int statusCode = restTemplate.exchange(url, GET, entity, Secret[].class).getStatusCode().value();
+            System.out.println("Status code: "+ e.getStatusCode());
+//            System.out.println("Status code: "+ statusCode);
+            e.printStackTrace();
+            model.addAttribute("code", e.getStatusCode());
+            model.addAttribute("reason", e.getStatusText());
+            return "error";
+        }
     }
 
     @RequestMapping("repos/{owner}/{name:.+}/{secretName}")

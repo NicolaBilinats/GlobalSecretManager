@@ -5,6 +5,7 @@ import com.secret.repositories.UsersRepo;
 import com.secret.services.UserService;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
+import lombok.Builder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -41,22 +43,25 @@ public class UsersLoader implements ApplicationListener<ContextRefreshedEvent> {
         this.userService = userService;
     }
 
-    public void getReq() {
+    private void getReq() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        if (restTemplate.exchange(url, GET, entity, User[].class).getStatusCode().value() == 200) {
+        try{
             Arrays.asList(restTemplate.exchange(url, GET, entity, User[].class).getBody()).forEach(i -> {
-                User user = new User.Builder()
-                        .setId(i.getId())
-                        .setLogin(i.getLogin())
-                        .setEmail(i.getEmail())
-                        .setAvatar_url(i.getAvatar_url())
-                        .setActive(i.getActive())
+                User user = User.builder()
+                        .id(i.getId())
+                        .login(i.getLogin())
+                        .email(i.getEmail())
+                        .avatar_url(i.getAvatar_url())
+                        .active(i.getActive())
                         .build();
                 userService.saveUser(user);
             });
+        } catch (HttpClientErrorException e ){
+            e.printStackTrace();
+            System.out.println("Drone is not working");
         }
     }
 

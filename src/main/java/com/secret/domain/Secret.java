@@ -1,7 +1,8 @@
 package com.secret.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -9,90 +10,18 @@ import java.util.Arrays;
  */
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Secret {
 
-    @Id
-    private Integer id;
+    private @Id Integer id;
     private String name;
     private String value;
     private String[] event;
 
-    public Secret() {
-    }
-
-    public Secret(Integer id, String name, String[] event) {
-        this.id = id;
-        this.name = name;
-        this.event = event;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String[] getEvent() {
-        return event;
-    }
-
-    public void setEvent(String[] event) {
-        this.event = event;
-    }
-
-    public String transformEvent(String[] event){
-        return Arrays.toString(event);
-    }
-
-    public static class Builder {
-        private Integer id;
-        private String name;
-        private String[] event;
-
-        public Builder(){
-
-        }
-
-        public Builder setId(Integer id){
-            this.id = id;
-            return this;
-        }
-
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder setEvent(String[] event) {
-            this.event = event;
-            return this;
-        }
-
-        public Secret build(){
-            return new Secret(id, name, event);
-        }
-    }
-
-
-    public String transformStr(String str){
+    private String transformStr(String str){
         StringBuilder builder = new StringBuilder();
         String[] a = str.replaceAll("\\[|\\]", "").split("[,]");
         for (int i = 0; i < a.length; i++) {

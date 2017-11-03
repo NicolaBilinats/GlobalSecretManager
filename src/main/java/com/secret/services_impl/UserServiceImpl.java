@@ -1,7 +1,8 @@
-package com.secret.services;
+package com.secret.services_impl;
 
 import com.secret.domain.User;
 import com.secret.repositories.UsersRepo;
+import com.secret.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
