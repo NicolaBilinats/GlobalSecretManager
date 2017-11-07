@@ -22,7 +22,7 @@ public class RepoController {
         this.repositoryService = repositoryService;
     }
 
-    @RequestMapping(value = "/repos", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getRepos(Model model){
         model.addAttribute("repos", repositoryService.listAllRepos());
         return "repos";

@@ -32,25 +32,27 @@ public class DroneMonitoring extends Thread{
 
     @Override
     public void run() {
-        int status = 200;
-        int repoLenght;
-        System.out.println("--------Start monitoring Drone--------");
-        headers.set("Authorization", token);
-        HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        try {
-            while (status == 200){
-                status = restTemplate.exchange(url, GET, entity, Repository[].class).getStatusCode().value();
-                repoLenght = restTemplate.exchange(url, GET, entity, Repository[].class).getBody().length;
-                System.out.println("Number of repo from Drone: "+repoLenght);
-                Thread.sleep(2000);
+        synchronized (this) {
+            int status = 200;
+            int repoLenght;
+            System.out.println("--------Start monitoring Drone--------");
+            headers.set("Authorization", token);
+            HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+            try {
+                while (status == 200) {
+                    status = restTemplate.exchange(url, GET, entity, Repository[].class).getStatusCode().value();
+                    repoLenght = restTemplate.exchange(url, GET, entity, Repository[].class).getBody().length;
+                    System.out.println("Number of repo from Drone: " + repoLenght);
+                    Thread.sleep(2000);
+                }
+                if (status != 200) {
+                    System.out.println("Connection with drone lost");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (NullPointerException n) {
+                n.printStackTrace();
             }
-            if (status != 200){
-                System.out.println("Connection with drone lost");
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (NullPointerException n){
-            n.printStackTrace();
         }
     }
 }

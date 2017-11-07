@@ -18,22 +18,23 @@ public class DBMonitoring extends Thread {
     }
 
     public void run() {
-        Thread thread = new Thread();
-        System.out.println("Start thread");
-        try {
-            while (true) {
-                System.out.println(Thread.currentThread().getName());
-                thread.sleep(5000);
-                for (GlobalSecret i : globalSecretService.listAllGlobalSecrets())
-                {
-                    System.out.println("Element: " + i);
+        synchronized (this) {
+            Thread thread = new Thread();
+            System.out.println("Start thread");
+            try {
+                while (true) {
+                    System.out.println(Thread.currentThread().getName());
+                    thread.sleep(5000);
+                    for (GlobalSecret i : globalSecretService.listAllGlobalSecrets()) {
+                        System.out.println("Element: " + i);
+                    }
+                    System.out.println("GlobalSecret's lenght in H2: " + globalSecretService.getLenght());
                 }
-                System.out.println("GlobalSecret's lenght in H2: " + globalSecretService.getLenght());
+            } catch (InterruptedException e) {
+                System.out.println("Thread is stopped");
+            } catch (NullPointerException f) {
+                f.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            System.out.println("Thread is stopped");
-        } catch (NullPointerException f) {
-            f.printStackTrace();
         }
     }
 
