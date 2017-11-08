@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR globalsecretmanager/initial
 ADD pom.xml ./
 RUN mvn package
-FROM java
-COPY java /globalsecretmanager/initial/target/globalsecretmanager-0.0.1.jar ./
+#FROM java
+#COPY java /globalsecretmanager/initial/target/globalsecretmanager-0.0.1.jar ./
 
 EXPOSE 8080
 
