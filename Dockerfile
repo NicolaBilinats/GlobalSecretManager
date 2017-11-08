@@ -6,11 +6,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
                 maven \
         && rm -rf /var/lib/apt/lists/*
 WORKDIR globalsecretmanager
-#RUN git clone https://github.com/spring-guides/gs-spring-boot.git
+#RUN git clone git@github.com:NicolaBilinats/GlobalSecretManager.git
 ADD pom.xml ./
 RUN mvn package
 FROM java
-COPY java /globalsecretmanager/target/globalsecretmanager-0.0.1.jar ./
+COPY java globalsecretmanager/target/globalsecretmanager-0.0.1.jar ./
 
 EXPOSE 8080
 
