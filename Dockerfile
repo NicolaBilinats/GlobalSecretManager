@@ -1,11 +1,16 @@
 FROM java
 MAINTAINER Nicola Bilinac 'tessariman@gmail.com'
 #COPY . /app
-WORKDIR globalsecretmanager/initial
 RUN apt-get update && apt-get install -y --no-install-recommends \
                 git \
                 maven \
         && rm -rf /var/lib/apt/lists/*
+WORKDIR globalsecretmanager/initial
+ADD pom.xml ./
+RUN mvn package
+FROM java
+COPY java /gs-spring-boot/initial/target/gs-spring-boot-0.1.0.jar ./
+
 EXPOSE 8080
 
 CMD [ "java", "-jar", "globalsecretmanager-0.1.0.jar" ]
