@@ -13,4 +13,4 @@ COPY java /globalsecretmanager/initial/target/gs-spring-boot-0.0.1.jar ./
 
 EXPOSE 8080
 
-CMD [ "java", "-jar", "globalsecretmanager-0.1.0.jar" ]
+CMD [ "java", "-jar", "globalsecretmanager-0.0.1.jar" ]
