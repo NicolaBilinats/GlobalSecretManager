@@ -9,7 +9,7 @@ WORKDIR globalsecretmanager/initial
 ADD pom.xml ./
 RUN mvn package
 FROM java
-COPY java /gs-spring-boot/initial/target/gs-spring-boot-0.1.0.jar ./
+COPY java /globalsecretmanager/initial/target/gs-spring-boot-0.0.1.jar ./
 
 EXPOSE 8080
 
