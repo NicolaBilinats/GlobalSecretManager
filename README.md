@@ -1,7 +1,7 @@
 # GlobalSecretManager
 Drone manager to manage global and local secrets.
 
-##Build
+## Build
 
 ```
 bower install
@@ -12,7 +12,7 @@ bower install
 mvn spring-boot:run
 ```
 
-##Docker
+## Docker
 
 ```
 docker-compose up-d
