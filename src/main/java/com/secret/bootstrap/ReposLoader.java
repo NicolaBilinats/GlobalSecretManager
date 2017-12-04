@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
                         .build();
                 repositoryService.save(repository);
             });
-        } catch (HttpClientErrorException e){
+        } catch (HttpClientErrorException | ResourceAccessException e){
             e.printStackTrace();
         }
     }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class UsersLoader implements ApplicationListener<ContextRefreshedEvent> {
                         .build();
                 userService.saveUser(user);
             });
-        } catch (HttpClientErrorException e ){
+        } catch (HttpClientErrorException | ResourceAccessException e ){
             e.printStackTrace();
         }
     }
