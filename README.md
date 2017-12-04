@@ -15,5 +15,5 @@ mvn spring-boot:run
 ## Docker
 
 ```
-docker-compose up-d
+docker-compose up -d
 ```
