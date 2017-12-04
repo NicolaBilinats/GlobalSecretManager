@@ -15,6 +15,5 @@ public interface SecretsService {
 
     void cleanSecret();
 
-//    long getLenght();
 }
 

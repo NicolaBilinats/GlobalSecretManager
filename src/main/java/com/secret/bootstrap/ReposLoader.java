@@ -53,7 +53,6 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
             });
         } catch (HttpClientErrorException e){
             e.printStackTrace();
-            System.out.println("Drone is not working");
         }
     }
 

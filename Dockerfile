@@ -1,17 +1,15 @@
-FROM java
-MAINTAINER Nicola Bilinac 'tessariman@gmail.com'
-#COPY . /app
-RUN apt-get update && apt-get install -y --no-install-recommends \
-                git \
-                maven \
-        && rm -rf /var/lib/apt/lists/*
-WORKDIR globalsecretmanager
-RUN git clone git@github.com:NicolaBilinats/GlobalSecretManager.git
-ADD pom.xml ./
+
+FROM delfer/java-builder AS builder
+
+ADD ./ /globalsecretmanager
+WORKDIR /globalsecretmanager
 RUN mvn package
-FROM java
-COPY java globalsecretmanager/target/globalsecretmanager-0.0.1.jar ./
+
+FROM openjdk:jre-alpine
+
+MAINTAINER Nicola Bilinac 'tessariman@gmail.com'
+COPY --from=builder /globalsecretmanager/target/globalsecretmanager-0.0.1-SNAPSHOT.jar /
 
 EXPOSE 8080
 
-CMD [ "java", "-jar", "globalsecretmanager-0.0.1.jar" ]
+CMD [ "java", "-jar", "/globalsecretmanager-0.0.1-SNAPSHOT.jar" ]

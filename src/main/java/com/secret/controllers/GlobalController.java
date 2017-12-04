@@ -80,15 +80,12 @@ public class GlobalController {
     @RequestMapping(value = "global", method = RequestMethod.POST)
     public String saveGlobalSecret(GlobalSecret globalSecret) {
         List<Repository> repToCreate = new ArrayList<Repository>((Collection<? extends Repository>) repositoryService.listAllRepos());
-        System.out.println("Global Secret to query: " + globalSecret);
         ConcurrentLinkedQueue<GlobalSecret> queue = new ConcurrentLinkedQueue<>();
         queue.add(globalSecret);
         Thread consumer = new Thread(new Consumer(queue));
         for (int i = 0; i < queue.size(); i++) {
             for (Repository p : repToCreate){
-                System.out.println("before: " + p);
             }
-            System.out.println("QUEUE start: " + queue);
             GlobalSecret secretFromQueue = queue.peek();
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -102,13 +99,9 @@ public class GlobalController {
                         .getBody())){
                     if (l.getName().equals(secretFromQueue.getName())){
                         repToCreate.remove(list);
-                        System.out.println("Repo added to list for deleting: " + list);
                         break;
                     }
                 }
-            }
-            for (Repository p : repToCreate){
-                System.out.println("after: " + p);
             }
             try {
                 repToCreate.forEach(
@@ -117,7 +110,6 @@ public class GlobalController {
                                 .getStatusCode()
                                 .value())
                 );
-                System.out.println("Status: "+globalSecret.getStatus());
                 if (globalSecret.getStatus()==200){
                     globalSecretsService.saveGlobalSecret(globalSecret);
                     consumer.start();
@@ -129,7 +121,6 @@ public class GlobalController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("QUEUE end: " + queue);
         }
         return "redirect:/globals";
     }
