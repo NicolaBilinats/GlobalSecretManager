@@ -37,7 +37,7 @@ public class ReposLoader implements ApplicationListener<ContextRefreshedEvent> {
         this.repositoryService = repositoryService;
     }
 
-    public void getReq() {
+    private void getReq() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);

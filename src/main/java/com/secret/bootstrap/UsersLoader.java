@@ -1,15 +1,9 @@
 package com.secret.bootstrap;
 
 import com.secret.domain.User;
-import com.secret.repositories.UsersRepo;
 import com.secret.services.UserService;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
-import lombok.Builder;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.http.HttpEntity;
@@ -18,9 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 
