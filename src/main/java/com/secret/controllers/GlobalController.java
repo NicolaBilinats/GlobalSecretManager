@@ -84,8 +84,6 @@ public class GlobalController {
         queue.add(globalSecret);
         Thread consumer = new Thread(new Consumer(queue));
         for (int i = 0; i < queue.size(); i++) {
-            for (Repository p : repToCreate){
-            }
             GlobalSecret secretFromQueue = queue.peek();
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
@@ -116,8 +114,6 @@ public class GlobalController {
                 } else {
                     System.out.println("ERROR");
                 }
-            } catch (HttpServerErrorException se){
-                se.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
