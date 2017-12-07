@@ -38,7 +38,14 @@ public class Scheduler {
 
     private GlobalSecretService globalSecretService;
 
+    private RepositoryService repositoryService;
 
+    private List<Repository> rep;
+
+    @Autowired
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
 
     @Autowired
     public void setGlobalSecretService(GlobalSecretService globalSecretService) {
@@ -46,17 +53,15 @@ public class Scheduler {
     }
 
 
-
-    @Scheduled(fixedRate = 4000)
+    @Scheduled(fixedRate = 3000)
     public void refreshSecrets() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", token);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        List<Repository> repToCreate = new ArrayList<>();
         List<GlobalSecret> globalSecretList = new ArrayList<GlobalSecret>((Collection<? extends GlobalSecret>) globalSecretService.listAllGlobalSecrets());
         HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-        try{
+        try {
             Arrays.asList(restTemplate.exchange(url, GET, entity, Repository[].class).getBody()).forEach(i -> {
                 Repository repository = Repository.builder()
                         .id(i.getId())
@@ -64,40 +69,37 @@ public class Scheduler {
                         .name(i.getName())
                         .timeout(i.getTimeout())
                         .build();
-                repToCreate.add(repository);
-                System.out.println("REPO TO CREATE: " + repToCreate);
+                repositoryService.save(repository);
+//                repToCreate.add(repository);
             });
-        } catch (HttpClientErrorException | ResourceAccessException e){
+        } catch (HttpClientErrorException | ResourceAccessException e) {
             e.printStackTrace();
         }
 
-
-        for (int i = 0; i < globalSecretList.size(); i++) {
-            GlobalSecret gs = globalSecretList.get(i);
+        for (GlobalSecret gs : globalSecretList) {
+            rep = (List<Repository>) repositoryService.listAllRepos();
             HttpEntity<String> request = new HttpEntity<String>(gs.toString(), headers);
-            for (Repository list : repToCreate) {
+            for (Repository list : repositoryService.listAllRepos()) {
                 for (Secret l : Arrays.asList(restTemplate
                         .exchange(URL_.concat(list.getOwner()).concat("/").concat(list.getName().concat("/secrets/")), GET, entity, Secret[].class)
                         .getBody())) {
                     if (l.getName().equals(gs.getName())) {
-                        repToCreate.remove(list);
+                        rep.remove(list);
                         break;
                     }
                 }
             }
+            if (rep != null && rep.size() != 0) {
+                try {
+                    System.out.println("Request: " + request.getBody());
+                    rep.forEach(
+                            k -> restTemplate
+                                    .postForEntity(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets"), request, String.class)
+                    );
 
-            try {
-                repToCreate.forEach(
-                        l -> System.out.println("Adress: " + URL_.concat(l.getOwner()).concat("/").concat(l.getName()).concat("/secrets"))
-                );
-                System.out.println("Request: " + request.getHeaders());
-                repToCreate.forEach(
-                        k -> restTemplate
-                                .postForEntity(URL_.concat(k.getOwner()).concat("/").concat(k.getName()).concat("/secrets"), request, String.class)
-                );
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
