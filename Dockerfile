@@ -1,8 +1,9 @@
 
-FROM delfer/java-builder AS builder
+FROM dedjopa/docker-builder AS builder
 
 ADD ./ /globalsecretmanager
 WORKDIR /globalsecretmanager
+RUN bower install
 RUN mvn package
 
 FROM openjdk:jre-alpine
